@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeLoginModal = document.querySelector(".close-login-modal");
   const loginMessage = document.getElementById("login-message");
 
+  // Dark mode elements
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const themeIcon = document.getElementById("theme-icon");
+
   // Activity categories with corresponding colors
   const activityTypes = {
     sports: { label: "Sports", color: "#e8f5e9", textColor: "#2e7d32" },
@@ -43,6 +47,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Authentication state
   let currentUser = null;
+
+  // Apply theme to the page
+  function applyTheme(isDark) {
+    const html = document.documentElement;
+    if (isDark) {
+      html.classList.add("dark-mode");
+      themeIcon.textContent = "☀️";
+      darkModeToggle.setAttribute("aria-pressed", "true");
+      localStorage.setItem("theme", "dark");
+    } else {
+      html.classList.remove("dark-mode");
+      themeIcon.textContent = "🌙";
+      darkModeToggle.setAttribute("aria-pressed", "false");
+      localStorage.setItem("theme", "light");
+    }
+  }
+
+  // Initialize dark mode from localStorage
+  function initializeDarkMode() {
+    const savedTheme = localStorage.getItem("theme");
+    const isDark = savedTheme === "dark";
+    
+    // Set default theme if none exists
+    if (!savedTheme) {
+      localStorage.setItem("theme", "light");
+    }
+    
+    // Update icon and ARIA attribute (class already applied by inline script)
+    themeIcon.textContent = isDark ? "☀️" : "🌙";
+    darkModeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+  }
+
+  // Toggle dark mode
+  function toggleDarkMode() {
+    const currentlyDark = document.documentElement.classList.contains("dark-mode");
+    applyTheme(!currentlyDark);
+  }
+
+  // Event listener for dark mode toggle
+  darkModeToggle.addEventListener("click", toggleDarkMode);
 
   // Time range mappings for the dropdown
   const timeRanges = {
@@ -927,6 +971,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Initialize app
+  initializeDarkMode();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
