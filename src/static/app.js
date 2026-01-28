@@ -68,6 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function initializeDarkMode() {
     const savedTheme = localStorage.getItem("theme");
     const isDark = savedTheme === "dark";
+    
+    // Set default theme if none exists
+    if (!savedTheme) {
+      localStorage.setItem("theme", "light");
+    }
+    
     // Update icon and ARIA attribute (class already applied by inline script)
     themeIcon.textContent = isDark ? "☀️" : "🌙";
     darkModeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
@@ -75,8 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Toggle dark mode
   function toggleDarkMode() {
-    const isDark = !document.documentElement.classList.contains("dark-mode");
-    applyTheme(isDark);
+    const currentlyDark = document.documentElement.classList.contains("dark-mode");
+    applyTheme(!currentlyDark);
   }
 
   // Event listener for dark mode toggle
