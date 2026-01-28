@@ -33,16 +33,18 @@
 }
 
 /* Dark mode colors */
-body.dark-mode {
+html.dark-mode {
   /* Primary colors - slightly lighter for dark mode */
   --primary: #3949ab;
   --primary-light: #6b74c2;
   --primary-dark: #1a237e;
+  --primary-text: #ffffff;
 
   /* Secondary colors remain similar */
   --secondary: #ff9800;
   --secondary-light: #ffb74d;
   --secondary-dark: #f57c00;
+  --secondary-text: #ffffff;
 
   /* Neutral colors - inverted for dark mode */
   --background: #121212;

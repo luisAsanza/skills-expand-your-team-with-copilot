@@ -48,35 +48,35 @@ document.addEventListener("DOMContentLoaded", () => {
   // Authentication state
   let currentUser = null;
 
-  // Dark mode state
-  let isDarkMode = false;
+  // Apply theme to the page
+  function applyTheme(isDark) {
+    const html = document.documentElement;
+    if (isDark) {
+      html.classList.add("dark-mode");
+      themeIcon.textContent = "☀️";
+      darkModeToggle.setAttribute("aria-pressed", "true");
+      localStorage.setItem("theme", "dark");
+    } else {
+      html.classList.remove("dark-mode");
+      themeIcon.textContent = "🌙";
+      darkModeToggle.setAttribute("aria-pressed", "false");
+      localStorage.setItem("theme", "light");
+    }
+  }
 
   // Initialize dark mode from localStorage
   function initializeDarkMode() {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      isDarkMode = true;
-      document.body.classList.add("dark-mode");
-      themeIcon.textContent = "☀️";
-    } else {
-      isDarkMode = false;
-      document.body.classList.remove("dark-mode");
-      themeIcon.textContent = "🌙";
-    }
+    const isDark = savedTheme === "dark";
+    // Update icon and ARIA attribute (class already applied by inline script)
+    themeIcon.textContent = isDark ? "☀️" : "🌙";
+    darkModeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
   }
 
   // Toggle dark mode
   function toggleDarkMode() {
-    isDarkMode = !isDarkMode;
-    if (isDarkMode) {
-      document.body.classList.add("dark-mode");
-      themeIcon.textContent = "☀️";
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark-mode");
-      themeIcon.textContent = "🌙";
-      localStorage.setItem("theme", "light");
-    }
+    const isDark = !document.documentElement.classList.contains("dark-mode");
+    applyTheme(isDark);
   }
 
   // Event listener for dark mode toggle
